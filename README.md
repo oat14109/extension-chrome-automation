@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # extension-chrome-automation
 extension auto input value in browser
 =======
@@ -8,41 +8,52 @@ Chrome/Edge extension ที่ช่วยเติม AD username ลงใน
 
 ## 🚀 การติดตั้งแบบ One-Click
 
-### ข้อกำหนดเบื้องต้น
-- Windows 10/11
-- .NET 8 SDK ([ดาวน์โหลดที่นี่](https://dotnet.microsoft.com/download/dotnet/8.0))
-- Chrome หรือ Edge browser
-- PowerShell with Administrator privileges
+# Extension Chrome Automation
 
-### การติดตั้ง
-1. **รัน PowerShell as Administrator**
-2. **เปลี่ยนไปยังโฟลเดอร์โปรเจกต์**
-   ```powershell
-   cd D:\work\ad_to_jira
-   ```
-3. **รันคำสั่งติดตั้ง**
-   ```powershell
-   .\INSTALL.ps1
-   ```
-4. **ทำตามคำแนะนำบนหน้าจอ**
+Extension สำหรับ Chrome/Edge ที่ช่วยเติม AD/Windows username ลงในฟิลด์ Jira โดยดึงข้อมูลจากบริการภายในเครื่อง (HTTP) ที่พอร์ต 7777
 
-### การโหลด Chrome Extension
-หลังจากรัน INSTALL.ps1 แล้ว:
-````markdown
-# extension-chrome-automation
+แกนหลักของโปรเจกต์ตอนนี้เป็นโหมด HTTP ผ่าน `whoami-service-main/service.py` แล้ว ไม่ใช้ native messaging อีกต่อไป
 
-Autofill Jira fields with the current Windows username via a local HTTP service and a lightweight Chrome/Edge extension.
+## โครงสร้างสำคัญ
+- `jira-ad-autofill/extension/` — ไฟล์ส่วนขยาย (Manifest V3)
+- `whoami-service-main/service.py` — Windows Service (pywin32) ให้ HTTP endpoint
 
-Quick start
-- Start local whoami service (PowerShell as Administrator):
-   - python .\whoami-service-main\service.py --startup auto install
-   - python .\whoami-service-main\service.py start
-   - Verify: open http://127.0.0.1:7777/healthz
-- Load the extension (unpacked):
-   - Chrome/Edge → Developer mode → Load unpacked → select `jira-ad-autofill/extension`
-   - Configure Options (Custom Field ID or Label)
+## เตรียมระบบ (Windows)
+- ติดตั้ง Python 3.11+ และแพ็กเกจ pywin32
+- เปิด PowerShell แบบ Run as Administrator
 
-More details
-- See `jira-ad-autofill/extension/README.md` for extension behavior and troubleshooting.
-````
-## 🎯 การใช้งาน
+## ติดตั้งและรัน Whoami Service (HTTP)
+1) ติดตั้งบริการให้เริ่มอัตโนมัติและสตาร์ต
+```powershell
+python .\whoami-service-main\service.py --startup auto install
+python .\whoami-service-main\service.py start
+```
+2) ตรวจสุขภาพบริการ
+```powershell
+curl http://127.0.0.1:7777/healthz
+```
+3) ตัวอย่างข้อมูล
+```powershell
+curl http://127.0.0.1:7777/whoami
+```
+
+## โหลด Extension แบบ Unpacked
+1) Chrome/Edge → เปิด Developer mode
+2) Load unpacked → เลือกโฟลเดอร์ `jira-ad-autofill/extension`
+
+สิทธิ์ที่ต้องอนุญาตใน manifest
+- `https://*.atlassian.net/*`
+- `http://127.0.0.1/*`
+
+## ใช้งาน
+- ตั้งค่าในหน้า Options: ระบุ Custom Field ID หรือใช้ Label fallback, ตั้งค่า manual username (ถ้าต้องการ)
+- เข้า Jira (คลาวด์) แล้วเปิดหน้าสร้าง/แก้ไข issue ระบบจะพยายามเติมค่าให้โดยอัตโนมัติ
+
+## Troubleshooting
+- ถ้าไม่พบ username: เปิด `chrome://extensions/` → คลิก Service worker ของส่วนขยาย → ดู log ของ background ว่าดึง `http://127.0.0.1:7777/whoami` ผ่านหรือไม่
+- ตรวจว่า Service ทำงานอยู่ และพอร์ต 7777 ไม่ถูกบล็อก
+- ตรวจ endpoint ด้วยเบราว์เซอร์: http://127.0.0.1:7777/whoami
+
+## หมายเหตุการย้ายโหมด
+- โหมด native messaging และสคริปต์ที่เกี่ยวข้องถูกถอดออกแล้ว เพื่อลดความซับซ้อน
+- หากต้องการโหมดเดิม แจ้งได้ จะเพิ่มสวิตช์ fallback ให้เลือกได้
