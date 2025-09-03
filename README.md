@@ -2,7 +2,7 @@
 # extension-chrome-automation
 extension auto input value in browser
 =======
-# Jira AD Autofill
+# Autofill
 
 Chrome/Edge extension ที่ช่วยเติม AD username ลงในฟิลด์ Jira อัตโนมัติ
 
@@ -15,8 +15,8 @@ Extension สำหรับ Chrome/Edge ที่ช่วยเติม AD/Wi
 แกนหลักของโปรเจกต์ตอนนี้เป็นโหมด HTTP ผ่าน `whoami-service-main/service.py` แล้ว ไม่ใช้ native messaging อีกต่อไป
 
 ## โครงสร้างสำคัญ
-- `jira-ad-autofill/extension/` — ไฟล์ส่วนขยาย (Manifest V3)
-- `whoami-service-main/service.py` — Windows Service (pywin32) ให้ HTTP endpoint
+- `autofill/extension/` — ไฟล์ส่วนขยาย (Manifest V3)
+- `webservice-new/service.py` — Windows Service (pywin32) ให้ HTTP endpoint
 
 ## เตรียมระบบ (Windows)
 - ติดตั้ง Python 3.11+ และแพ็กเกจ pywin32
@@ -25,8 +25,8 @@ Extension สำหรับ Chrome/Edge ที่ช่วยเติม AD/Wi
 ## ติดตั้งและรัน Whoami Service (HTTP)
 1) ติดตั้งบริการให้เริ่มอัตโนมัติและสตาร์ต
 ```powershell
-python .\whoami-service-main\service.py --startup auto install
-python .\whoami-service-main\service.py start
+python .\webservice-new\service.py --startup auto install
+python .\webservice-new\service.py start
 ```
 2) ตรวจสุขภาพบริการ
 ```powershell
@@ -39,7 +39,7 @@ curl http://127.0.0.1:7777/whoami
 
 ## โหลด Extension แบบ Unpacked
 1) Chrome/Edge → เปิด Developer mode
-2) Load unpacked → เลือกโฟลเดอร์ `jira-ad-autofill/extension`
+2) Load unpacked → เลือกโฟลเดอร์ `webservice-new/extension`
 
 สิทธิ์ที่ต้องอนุญาตใน manifest
 - `https://*.atlassian.net/*`
