@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+**/service.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Dotnet
+**/bin/
+**/obj/
+
+# VS Code
+.vscode/

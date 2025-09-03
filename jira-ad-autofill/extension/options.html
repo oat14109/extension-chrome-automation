@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira AD Autofill - Simple Options</title>
+    <style>
+      body{font-family:system-ui,Segoe UI,Arial;margin:24px;max-width:720px}
+      label{display:block;margin:10px 0}
+      input{width:100%;padding:8px}
+      button{padding:8px 12px;margin:5px}
+      #status{margin-left:8px;color:green}
+      .note{background:#f0f8ff;padding:10px;margin:10px 0;border-left:3px solid #007acc}
+    </style>
+  </head>
+  <body>
+    <h3>Simple Autofill Settings</h3>
+    
+    <div class="note">
+      <strong>AD Autofill:</strong> Manual Username จะถูกใช้เป็นอันดับแรกเสมอ (override) หากไม่มีจึงจะใช้ AD username จาก native host
+    </div>
+    
+    <label>Extension ID
+      <input id="extId" readonly placeholder="Auto-detected" />
+    </label>
+    
+    <label>Custom Field ID 
+      <input id="fieldId" placeholder="customfield_12345" />
+    </label>
+    
+    <label>Field Label (fallback) 
+      <input id="fieldLabel" placeholder="AD Username" />
+    </label>
+    
+    <label>Manual Username (fallback)
+      <input id="manualUsername" placeholder="fallback if native host fails" />
+    </label>
+    
+    <label><input id="debug" type="checkbox"> Enable debug logs</label>
+    
+    <label>Tries <input id="tries" type="number" min="1" value="40"></label>
+    <label>Interval (ms) <input id="intervalMs" type="number" min="100" value="700"></label>
+    
+    <div style="margin-top:20px">
+      <button id="save">Save Settings</button>
+      <button id="testHost">Test Native Host</button>
+      <button id="testManual">Test Manual Username</button>
+      <button id="clearCache">Clear Cache</button>
+      <button id="testSimple">Test Fill (reload tab)</button>
+      <span id="status"></span>
+    </div>
+    
+    <div class="note">
+      <strong>วิธีใช้งาน:</strong>
+      <ol>
+        <li><strong>ใช้ Manual Username:</strong> ใส่ username ที่ต้องการใน "Manual Username" และกด Save</li>
+        <li><strong>ใช้ AD Username:</strong> ล้าง "Manual Username" ให้ว่าง แล้วกด "Test Native Host" และ Save</li>
+        <li><strong>ทดสอบ:</strong> เปิดหน้า Jira หรือหน้าทดสอบ และกด "Test Fill" หรือรีเฟรช</li>
+        <li><strong>Debug:</strong> เปิด Debug logs เพื่อดู username ที่ถูกใช้</li>
+      </ol>
+    </div>
+    
+    <script src="options.js"></script>
+  </body>
+</html>

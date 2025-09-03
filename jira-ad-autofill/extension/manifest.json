@@ -1,0 +1,33 @@
+{
+  "name": "Jira AD Autofill",
+  "description": "Autofill AD username into a Jira custom field",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": [
+    "https://*.atlassian.net/*",
+    "http://127.0.0.1/*",
+    "file:///*"
+  ],
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.atlassian.net/*",
+        "http://localhost/*",
+        "http://127.0.0.1/*",
+        "file:///*"
+      ],
+      "js": [
+        "simple-content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
