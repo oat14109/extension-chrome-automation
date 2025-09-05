@@ -8,7 +8,7 @@ param(
 )
 
 # Configuration
-$ServiceName = "ADUsernameHTTPService-ronnawit_s-7777-20250902184450"
+$ServiceName = "ADUsernameHTTPService"
 $ServiceDisplayName = "AD Username HTTP Service"
 $ServicePort = 7777
 $ServiceHost = "127.0.0.1"
